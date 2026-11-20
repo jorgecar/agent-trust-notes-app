@@ -5,9 +5,9 @@
       "date": "2026-11-20",
       "gate": "pending-settings",
       "filesDone": true,
-      "settingsPending": ["create the GitHub repository and push", "label agent", "label hotfix", "label incident", "Pages built from Actions", "approve the github-pages environment on the first run", "first workflow run"],
+      "settingsPending": [],
       "review": "done",
-      "notes": "No GitHub remote, so the live compute run was skipped. CI pass rate shows no data until a workflow named check exists (stage 1)."
+      "notes": "Settings match (read-back 2026-11-20) and the dashboard is live at https://jorgecar.github.io/agent-trust-notes-app/ with the definitions and empty values. The gate is met when the first labelled change appears after its merge: the stage 1 pull request will be that change."
     }
   }
 }
