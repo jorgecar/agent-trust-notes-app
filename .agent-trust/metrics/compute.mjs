@@ -2,7 +2,7 @@
 // and writes metrics.json and index.html. Read-only on GitHub.
 // Usage: GITHUB_TOKEN=... GITHUB_REPOSITORY=owner/repo node compute.mjs [outDir]
 // Copy compute.mjs and metrics.mjs together. selftest.mjs checks the formulas.
-import { mkdirSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { computeMetrics } from "./metrics.mjs";
 
 const repo = process.env.GITHUB_REPOSITORY;
@@ -65,7 +65,20 @@ const ciRuns = (await all(`/repos/${repo}/actions/runs?branch=main&created=>=${s
   .filter((r) => r.name === "check" && r.status === "completed")
   .map((r) => ({ conclusion: r.conclusion }));
 
-const metrics = { repository: repo, generatedAt: new Date().toISOString(), ...computeMetrics({ days, prs, incidents, ciRuns }) };
+// Stage 2: the latest eval results file, if the repository has one.
+const evalsDir = process.env.EVALS_RESULTS_DIR ?? ".agent-trust/evals/results";
+let evals = null;
+if (existsSync(evalsDir)) {
+  const files = readdirSync(evalsDir).filter((f) => f.endsWith(".json")).sort();
+  if (files.length > 0) {
+    const latest = JSON.parse(readFileSync(`${evalsDir}/${files[files.length - 1]}`, "utf8"));
+    const pick = ["date", "model", "harnessVersion", "arm", "suitePassRate", "noise", "smallestDetectableGain", "triggerRate", "scopeViolations", "totalCostUsd"];
+    evals = Object.fromEntries(pick.filter((k) => k in latest).map((k) => [k, typeof latest[k] === "object" ? JSON.stringify(latest[k]) : latest[k]]));
+    evals.file = files[files.length - 1];
+  }
+}
+
+const metrics = { repository: repo, generatedAt: new Date().toISOString(), ...computeMetrics({ days, prs, incidents, ciRuns }), evals };
 mkdirSync(outDir, { recursive: true });
 writeFileSync(`${outDir}/metrics.json`, JSON.stringify(metrics, null, 2));
 const esc = (v) => String(v ?? "no data").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
@@ -77,5 +90,6 @@ writeFileSync(`${outDir}/index.html`, `<!doctype html><meta charset="utf-8"><tit
 <h2>Trust layer</h2><table>${rows(metrics.trust)}</table>
 <h2>Agent work</h2><table>${rows(metrics.split.agent)}</table>
 <h2>Other work</h2><table>${rows(metrics.split.other)}</table>
+${evals ? `<h2>Latest eval run</h2><table>${rows(evals)}</table>` : "<h2>Latest eval run</h2><p>No eval results yet.</p>"}
 <h2>Definitions</h2><table>${rows(metrics.definitions)}</table>`);
 console.log(JSON.stringify(metrics.outcome), JSON.stringify(metrics.trust));

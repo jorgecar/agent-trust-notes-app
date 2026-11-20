@@ -39,6 +39,9 @@ const expected = {
   "trust.incidentsLinkedToChangeShare": 0.5,
   "split.agent.merges": 2,
   "split.other.merges": 1,
+  "split.agent.changeFailRate": 0.5,
+  "split.other.changeFailRate": 1,
+  "split.agent.churnRate7d": 0.5,
 };
 
 const m = computeMetrics(data);
