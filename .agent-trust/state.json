@@ -3,21 +3,19 @@
   "stages": {
     "0": {
       "date": "2026-11-20",
-      "gate": "pending-settings",
+      "gate": "met",
       "filesDone": true,
       "settingsPending": [],
       "review": "done",
-      "notes": "Settings match (read-back 2026-11-20) and the dashboard is live at https://jorgecar.github.io/agent-trust-notes-app/ with the definitions and empty values. The gate is met when the first labelled change appears after its merge: the stage 1 pull request will be that change."
+      "notes": "Settings match (read-back 2026-11-20). The dashboard at https://jorgecar.github.io/agent-trust-notes-app/ updates by itself and showed the first labelled change, pull request 1, as agent work after its merge."
     },
     "1": {
       "date": "2026-11-20",
-      "gate": "pending-settings",
+      "gate": "met",
       "filesDone": true,
-      "settingsPending": [
-        "required status check: check"
-      ],
+      "settingsPending": [],
       "review": "done",
-      "notes": "npm run check passes locally in about 8 s (14.8 s cold). Each of the five checks was broken once and failed alone. No formatter exists, so format is not checked. The check job has not run on GitHub: CI run pending, no push by the agent. The person must commit the new files, open the pull request with the agent label, confirm the job is named check, apply the ruleset from the plan, then run github-readback.mjs. package.json was added to the protected list after the review (approved by the person)."
+      "notes": "The check job passed on pull request 1 and on main. The ruleset requires check before a merge to main, and the read-back printed SETTINGS MATCH on 2026-11-20. npm run check takes about 8 s locally. No formatter exists, so format is not checked. package.json is on the protected list."
     }
   }
 }
