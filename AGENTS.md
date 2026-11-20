@@ -17,7 +17,8 @@ The team measures how agent work behaves. The metrics are defined in `.agent-tru
 Stop, write the question in your final message, and make no change for these:
 
 - Adding, removing or upgrading a dependency (any change to `package.json` or `package-lock.json`).
-- Adding, removing or renaming a route under `/api/`, or changing the status code or the response shape of an existing one.
+- Adding, removing or renaming a route under `/api/`, even when the task asks for it: a person confirms the API design first.
+- Changing the status code or the response shape of an existing route, unless the task asks for exactly that change.
 
 ### Never do
 
