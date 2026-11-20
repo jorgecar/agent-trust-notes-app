@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shared notes</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 40rem; margin: 2rem auto; padding: 0 1rem; }
+    form { display: grid; gap: .5rem; margin-bottom: 1.5rem; }
+    li { border-bottom: 1px solid #ddd; padding: .5rem 0; white-space: pre-wrap; }
+    .error { color: #b00020; }
+  </style>
+</head>
+<body>
+  <h1>Shared notes</h1>
+  <form id="note-form">
+    <label>Author <input name="author" required maxlength="80"></label>
+    <label>Note <textarea name="text" required maxlength="2000" rows="3"></textarea></label>
+    <button type="submit">Add note</button>
+    <p id="error" class="error" role="alert"></p>
+  </form>
+  <ul id="notes" aria-label="Notes"></ul>
+  <script src="/app.js"></script>
+</body>
+</html>
