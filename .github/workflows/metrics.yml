@@ -1,0 +1,19 @@
+name: metrics
+on:
+  schedule: [{ cron: "17 5 * * *" }]
+  workflow_dispatch:
+permissions: { contents: read, pull-requests: read, issues: read, actions: read, pages: write, id-token: write }
+jobs:
+  metrics:
+    runs-on: ubuntu-latest
+    environment: { name: github-pages }
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: node .agent-trust/metrics/compute.mjs metrics-site
+        env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
+      - uses: actions/upload-pages-artifact@v3
+        with: { path: metrics-site }
+      - uses: actions/deploy-pages@v4

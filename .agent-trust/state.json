@@ -1,0 +1,13 @@
+{
+  "skillVersion": "0.2.0",
+  "stages": {
+    "0": {
+      "date": "2026-11-20",
+      "gate": "pending-settings",
+      "filesDone": true,
+      "settingsPending": ["create the GitHub repository and push", "label agent", "label hotfix", "label incident", "Pages built from Actions", "approve the github-pages environment on the first run", "first workflow run"],
+      "review": "done",
+      "notes": "No GitHub remote, so the live compute run was skipped. CI pass rate shows no data until a workflow named check exists (stage 1)."
+    }
+  }
+}
